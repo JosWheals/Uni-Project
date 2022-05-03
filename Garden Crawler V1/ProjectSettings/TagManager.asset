@@ -10,6 +10,7 @@ TagManager:
   - EnHealth
   - Moves
   - Infomation
+  - Enemy
   layers:
   - Default
   - TransparentFX

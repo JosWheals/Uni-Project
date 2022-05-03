@@ -13,11 +13,6 @@ public class Battleloop : MonoBehaviour
     public int MaxHealth;
     private int CurrentHealth;
     private int damage;
-    private int EnMaxHealth;
-    private int ENCurrentHealth;
-    private string EnMove; // for the move number
-    private string Enmove; // for move name
-    private string name;
     private int Def;
     private int EnDamage;
     private int Speed;
@@ -25,9 +20,19 @@ public class Battleloop : MonoBehaviour
     private int TotalDamage;
     private int turnumber;
     private int RNG;
-    private int MoveRNG;
+    private int MoveRNG;    
+    private int EnMaxHealth;
+    private int ENCurrentHealth;
+    private string EnMove; // for the move number
+    private string Enmove; // for move name
+    private string name;
+    public Sprite CommanderCarrot;
+    public Sprite RandyRadish;
+    public Sprite OlivanderTheOnion;
     private bool next;
     public GameObject Moves;
+    public Image EnImage;
+   
 
     // Start is called before the first frame update
     void Start()
@@ -43,6 +48,8 @@ public class Battleloop : MonoBehaviour
             Enmove = "Barrage";
             Def = 8;
             EnDamage = 12;
+            EnImage.sprite = CommanderCarrot;
+
          
         }
 
@@ -55,6 +62,7 @@ public class Battleloop : MonoBehaviour
             Enmove = "Roll";
             Def = 10;
             EnDamage = 8;
+            EnImage.sprite = OlivanderTheOnion;
        
         }
 
@@ -67,6 +75,7 @@ public class Battleloop : MonoBehaviour
             Enmove = "Head Butt";
             Def = 5;
             EnDamage = 5;
+            EnImage.sprite = RandyRadish;
 
 
         }
@@ -87,27 +96,25 @@ public class Battleloop : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             turn(1);
-            turnumber = 1;
         }
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             turn(2);
-            turnumber = 2;
+
         }
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
             turn(3);
-            turnumber = 3;
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
             turn(4);
-            turnumber = 4;
         }
-        if (Input.GetKeyDown("enter"))
+        if (Input.GetKeyDown("space"))
         {
 
-            turn(5);
+            next = true;
+            EnTurn();
         }
         if (CurrentHealth < 0)
         {
@@ -135,16 +142,7 @@ public class Battleloop : MonoBehaviour
             MoveTitle.text = "you use your pitchfork";
             TotalDamage = damage - Def;
             ENCurrentHealth = ENCurrentHealth - TotalDamage;
-            if (ENCurrentHealth <= 0)
-            {
-                ENCurrentHealth = 0;
-                MoveTitle.text = "You killed " + name + " you survived!!";
-                StartCoroutine(WaitBeforENDeath());
-            }
-            else
-            {
-                StartCoroutine(WaitBeforNext());
-            }
+
 
 
         }
@@ -164,7 +162,7 @@ public class Battleloop : MonoBehaviour
             {
                 CurrentHealth = 30;
             }
-            StartCoroutine(WaitBeforNext());
+
         }
 
         if (move == 3)
@@ -176,37 +174,21 @@ public class Battleloop : MonoBehaviour
             MoveTitle.text = "you use your Pesticide";
             TotalDamage = damage;
             ENCurrentHealth = ENCurrentHealth - TotalDamage;
-            if (ENCurrentHealth <= 0)
-            {
-                ENCurrentHealth = 0;
-                MoveTitle.text = "You killed " + name + " you survived!!";
-                StartCoroutine(WaitBeforENDeath());
-            }
-            else
-            {
-                StartCoroutine(WaitBeforNext());
-            }
+
+
         }
 
         if (move == 4)
         {
            
             Debug.Log("Punch");
-            damage = 20;
+            damage = 0; // this is show how the death mechanic works change later
             GameObject.FindWithTag("Moves").SetActiveRecursively(false);
             MoveTitle.text = "you use your fist to punch them";
-            TotalDamage = damage - Def;
+            TotalDamage = damage;
             ENCurrentHealth = ENCurrentHealth - TotalDamage;
-            if (ENCurrentHealth <= 0)
-            {
-                ENCurrentHealth = 0;
-                MoveTitle.text = "You killed " + name + " you survived!!";
-                StartCoroutine(WaitBeforENDeath());
-            }
-            else
-            {
-                StartCoroutine(WaitBeforNext());
-            }
+
+
 
         }
     }
@@ -214,7 +196,7 @@ public class Battleloop : MonoBehaviour
         {
             MoveTitle.text = (name + " uses " + Enmove);
             CurrentHealth = CurrentHealth - EnDamage;
-            StartCoroutine(WaitBeforloop());
+            LoopTurn();
 
         }
         void LoopTurn()
@@ -230,11 +212,7 @@ public class Battleloop : MonoBehaviour
             EnTurn();
         }
 
-        IEnumerator WaitBeforloop()
-        {
-            yield return new WaitForSeconds(1);
-            LoopTurn();
-        }
+
         IEnumerator WaitBeforDeath()
         {
             yield return new WaitForSeconds(2);
