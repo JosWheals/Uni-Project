@@ -31,6 +31,7 @@ public class Battleloop : MonoBehaviour
     public Sprite OlivanderTheOnion;
     private bool next;
     public GameObject Moves;
+    public GameObject Spawner;
     public Image EnImage;
    
 
@@ -126,7 +127,9 @@ public class Battleloop : MonoBehaviour
         {
             ENCurrentHealth = 0;
             MoveTitle.text = "You killed " + name + " you survived!!";
+            Spawner.SetActive(false);
             StartCoroutine(WaitBeforENDeath());
+
         }
 
     }
